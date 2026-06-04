@@ -11,8 +11,31 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.svm import SVC
 from sklearn.tree import DecisionTreeClassifier
+from sklearn.linear_model import LinearRegression
+from sklearn.base import BaseEstimator, ClassifierMixin
+import numpy as np
 
 from .utils import RANDOM_STATE
+
+
+class LinearRegressionClassifier(BaseEstimator, ClassifierMixin):
+    """LinearRegression wrapped to expose predict_proba via clipping."""
+    def __init__(self):
+        self.model = LinearRegression()
+        self.classes_ = np.array([0, 1])
+
+    def fit(self, X, y):
+        self.model.fit(X, y)
+        return self
+
+    def predict_proba(self, X):
+        raw = self.model.predict(X)
+        raw = np.where(np.isfinite(raw), raw, 0.5)
+        p = np.clip(raw, 0, 1)
+        return np.column_stack([1 - p, p])
+
+    def predict(self, X):
+        return (self.model.predict(X) >= 0.5).astype(int)
 
 
 def get_models(random_state: int = RANDOM_STATE, fast: bool = False) -> dict:
@@ -66,6 +89,10 @@ def get_models(random_state: int = RANDOM_STATE, fast: bool = False) -> dict:
                 "model__weights": ["uniform", "distance"],
             },
         },
+        "linear_regression": {
+            "estimator": LinearRegressionClassifier(),
+            "param_grid": {},
+        },
     }
 
     if fast:
@@ -76,6 +103,7 @@ def get_models(random_state: int = RANDOM_STATE, fast: bool = False) -> dict:
             "gradient_boosting": {"model__learning_rate": [0.05], "model__max_depth": [2, 3]},
             "svm": {"model__C": [1], "model__kernel": ["rbf"]},
             "knn": {"model__n_neighbors": [5, 11]},
+            "linear_regression": {},
         }
         for name, grid in fast_grids.items():
             models[name]["param_grid"] = grid
