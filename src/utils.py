@@ -27,8 +27,14 @@ def data_dir() -> Path:
     return project_root() / "data"
 
 
+def storage_dir() -> Path:
+    """Return the writable directory used for generated artifacts."""
+    root = os.environ.get("WIDS_STORAGE_DIR")
+    return Path(root).expanduser().resolve() if root else project_root()
+
+
 def results_dir() -> Path:
-    out = project_root() / "results"
+    out = storage_dir() / "results"
     out.mkdir(parents=True, exist_ok=True)
     return out
 
@@ -43,6 +49,7 @@ def save_table(df, name: str) -> Path:
 def save_figure(fig, name: str) -> Path:
     """Persist a matplotlib figure in results/ and return the path."""
     path = results_dir() / name
+    path.parent.mkdir(parents=True, exist_ok=True)
     fig.savefig(path, dpi=130, bbox_inches="tight")
     return path
 
