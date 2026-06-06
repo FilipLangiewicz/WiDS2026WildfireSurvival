@@ -1,0 +1,25 @@
+model,horizon_h,roc_auc
+gradient_boosting (tuned),12,0.962441603147283
+gradient_boosting (tuned),24,0.9855591359350757
+gradient_boosting (tuned),48,0.9871969696969697
+gradient_boosting (tuned),72,1.0
+decision_tree (tuned),12,0.9644701253995575
+decision_tree (tuned),24,0.981859410430839
+decision_tree (tuned),48,0.9962878787878787
+decision_tree (tuned),72,1.0
+random_forest (tuned),12,0.9486107696090484
+random_forest (tuned),24,0.9833512352309345
+random_forest (tuned),48,0.9918939393939394
+random_forest (tuned),72,0.9999523264683448
+gradient_boosting_survival (tuned),12,0.9744897959183674
+gradient_boosting_survival (tuned),24,0.9878267096312209
+gradient_boosting_survival (tuned),48,0.9971212121212122
+gradient_boosting_survival (tuned),72,1.0
+random_survival_forest (tuned),12,0.9643471846569953
+random_survival_forest (tuned),24,0.9749373433583959
+random_survival_forest (tuned),48,0.9824242424242424
+random_survival_forest (tuned),72,0.9960907704042716
+cox_ph (tuned),12,0.8846815834767642
+cox_ph (tuned),24,0.8601265067430481
+cox_ph (tuned),48,0.8684848484848484
+cox_ph (tuned),72,0.7524790236460717
