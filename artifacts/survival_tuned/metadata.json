@@ -35,7 +35,7 @@
       "model": "random_survival_forest (tuned)",
       "hybrid": 0.9388505943425857,
       "c_index": 0.9304405432262338,
-      "weighted_brier": 0.05754509803612058
+      "weighted_brier": 0.05754509803612059
     },
     {
       "model": "cox_ph (tuned)",

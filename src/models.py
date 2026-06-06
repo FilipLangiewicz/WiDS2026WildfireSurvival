@@ -172,10 +172,10 @@ def get_default_models(random_state: int = RANDOM_STATE, fast: bool = False) -> 
                 "model__weights": ["uniform", "distance"],
             },
         },
-        # "linear_regression": {
-        #     "estimator": LinearRegressionClassifier(),
-        #     "param_grid": {},
-        # },
+        "linear_regression": {
+            "estimator": LinearRegressionClassifier(),
+            "param_grid": {},
+        },
     }
 
     if fast:
