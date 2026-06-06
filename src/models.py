@@ -101,7 +101,7 @@ class SurvivalAdapter:
         return np.clip(prob, 0.0, 1.0)
 
 
-class LinearRegressionClassifier(BaseEstimator, ClassifierMixin):
+class LinearRegressionClassifier(ClassifierMixin, BaseEstimator):
     """LinearRegression wrapped to expose predict_proba via clipping."""
     def __init__(self):
         self.model = LinearRegression()
