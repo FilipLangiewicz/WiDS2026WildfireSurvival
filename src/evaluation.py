@@ -256,7 +256,7 @@ def _survival_summary_rows(train, model_name, prob_matrix, score, horizons=HORIZ
         "brier_24h": score["brier_parts"][24],
         "brier_48h": score["brier_parts"][48],
         "brier_72h": score["brier_parts"][72],
-        "best_params": str(score["best_params"]),
+        "best_params": score["best_params"],
     }
 
     td_auc, td_times, mean_td_auc = _time_dependent_auc(train, prob_matrix, horizons=horizons)
@@ -393,6 +393,44 @@ def make_submission(fitted, X_test, ids, horizons=HORIZONS, monotonic=True):
     for j, h in enumerate(horizons):
         out[f"prob_{h}h"] = prob[:, j]
     return out
+
+
+def fit_survival_model(model_cfg, preprocessor_factory, train, features, params=None):
+    """Fit one survival model on the full training data."""
+    pre = preprocessor_factory()
+    X = pre.fit_transform(train[features])
+    model = model_cfg["factory"](**(params or {}))
+    model.fit(X, train[TIME_COL].to_numpy(), train[EVENT_COL].to_numpy())
+    return {"preprocessor": pre, "model": model}
+
+
+def fit_survival_models(
+    survival_models,
+    preprocessor_factory,
+    train,
+    features,
+    model_names=None,
+    params_by_model=None,
+):
+    """Fit selected survival model configs on the full training data."""
+    params_by_model = params_by_model or {}
+    names = model_names or survival_models.keys()
+    return {
+        name: fit_survival_model(
+            survival_models[name],
+            preprocessor_factory,
+            train,
+            features,
+            params=params_by_model.get(name),
+        )
+        for name in names
+    }
+
+
+def survival_params_from_summary(summary):
+    """Extract ``model -> best_params`` from a survival evaluation summary."""
+    rows = summary.drop_duplicates("model")
+    return dict(zip(rows["model"], rows["best_params"]))
 
 
 # --------------------------------------------------------------------------- #

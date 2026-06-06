@@ -1,0 +1,47 @@
+{
+  "model_family": "survival",
+  "models": [
+    "gradient_boosting_survival",
+    "random_survival_forest",
+    "cox_ph"
+  ],
+  "horizons": [
+    12,
+    24,
+    48,
+    72
+  ],
+  "best_params": {
+    "gradient_boosting_survival": {
+      "learning_rate": 0.1,
+      "max_depth": 2
+    },
+    "random_survival_forest": {
+      "min_samples_leaf": 5,
+      "n_estimators": 100
+    },
+    "cox_ph": {
+      "penalizer": 0.5
+    }
+  },
+  "summary": [
+    {
+      "model": "gradient_boosting_survival (tuned)",
+      "hybrid": 0.9687506989642312,
+      "c_index": 0.9375621066578337,
+      "weighted_brier": 0.017882761475884173
+    },
+    {
+      "model": "random_survival_forest (tuned)",
+      "hybrid": 0.9388505943425857,
+      "c_index": 0.9304405432262338,
+      "weighted_brier": 0.05754509803612058
+    },
+    {
+      "model": "cox_ph (tuned)",
+      "hybrid": 0.8087946251857385,
+      "c_index": 0.7933918516064922,
+      "weighted_brier": 0.1846041861374414
+    }
+  ]
+}
